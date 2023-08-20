@@ -1,5 +1,5 @@
 import React from 'react'
-import { options } from './api/[...nextauth]/options';
+import { options } from './api/auth/[...nextauth]/options';
 import { getServerSession } from 'next-auth/next';
 import type { GetServerSideProps } from 'next';
 

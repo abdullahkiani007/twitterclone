@@ -1,5 +1,5 @@
 import React from 'react'
-import SigninButton from './signinButton'
+import SigninButton from './SigninButton'
 
 function Header() {
   return (
