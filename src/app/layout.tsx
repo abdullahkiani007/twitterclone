@@ -1,8 +1,9 @@
 import './globals.css'
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
-import Header from '../component/Header'
-import Provider from '../component/Provider'
+import Provider from '../components/Provider'
+import Sidebar from '../components/Sidebar'
+import Newsfeed from '../components/Newsfeed'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
@@ -19,11 +20,21 @@ export default function RootLayout({
     <html lang="en">
     
       <body className={inter.className}>
+        <div className='flex flex-row justify-between w-full h-screen bg-pink-800'>
+          <div>
+            <Sidebar/>
+          </div>
       
-      <Provider>
-      <Header/>
-        {children}
-      </Provider>
+          <Provider>
+            {children}
+          </Provider>
+
+          <div className='hidden lg:block'>
+            <Newsfeed/>
+          </div>
+         
+        </div>
+      
      </body>
     </html>
   )
