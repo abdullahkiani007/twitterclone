@@ -6,7 +6,7 @@ import Newsfeed from '@/component/components/Newsfeed'
 
 const page = () => {
     return (
-        <div className="flex w-full bg-black text-white h-screen ">
+        <div className="flex w-full bg-black text-white h-full ">
           {/* <div className="flex lg:flex-grow border-r-2">
             <Sidebar />
           </div> */}

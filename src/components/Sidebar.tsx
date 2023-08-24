@@ -7,7 +7,7 @@ import twitterlogo from '../../public/logo-twitter-png-5860.png'
 
 const Sidebar = () => {
   return (
-    <div className=' mx-4 flex  w-full   h-full    min-[1250px]:ml-60 text-white bg-purple-900'>
+    <div className=' mx-4 flex  mt-2   h-full    min-[1250px]:ml-60 text-white bg-black'>
       <div className=''>
       <Image className='w-10 align-right mb-8' src={twitterlogo} alt='twitter logo'/>
 

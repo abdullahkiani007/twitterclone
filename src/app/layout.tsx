@@ -19,19 +19,20 @@ export default function RootLayout({
   return (
     <html lang="en">
     
-      <body className={inter.className}>
-        <div className='flex flex-row justify-between w-full h-screen bg-pink-800'>
-          <div>
+      <body className={`${inter.className} bg-black`} >
+        <div className='flex flex-row justify-between w-full h-full '>
+
+          <aside className='h-screen sticky top-0'>
             <Sidebar/>
-          </div>
+          </aside>
       
           <Provider>
             {children}
           </Provider>
 
-          <div className='hidden lg:block'>
+          <aside className='hidden lg:block h-screen sticky top-0'>
             <Newsfeed/>
-          </div>
+          </aside>
          
         </div>
       
