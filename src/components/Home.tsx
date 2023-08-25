@@ -1,10 +1,17 @@
 
-
+'use client'
 import React from 'react'
 import avatar from '../../public/myPic.jpg'
 import Image from 'next/image'
 import Tweet from './Tweet';
+import { useSession , signIn} from 'next-auth/react';
+
+
 const Home = () => {
+  const { data : session}  =useSession();
+
+  console.log(session);
+  if (session && session.user) {
   return (
 
     <div className='ml-4 bg-black border-gray-400 border-r-2 border-opacity-30 border-l-2 w-full '>
@@ -29,6 +36,11 @@ const Home = () => {
       <Tweet/> 
     </div>
   )
+  }else{
+    return(
+      <h1>Not signed in</h1>
+    )
+  }
 }
 
 export default Home 

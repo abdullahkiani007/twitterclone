@@ -3,6 +3,8 @@ import React from 'react'
 import { useState , useEffect } from 'react'
 import { usePathname } from 'next/navigation'
 import {BiSearch} from "react-icons/bi"
+
+
 const Newsfeed = () => {
   const [isSearch , setSearch]= useState(true);
 
@@ -25,7 +27,7 @@ const Newsfeed = () => {
   
   console.log("News feed got rendered")
   return (
-    <div className="w-80 ml-auto">
+    <div className={`w-80 ml-auto ${pathname === "/login" && 'hidden'}`}>
       Newsfeed
       {isSearch && (
         <div className="flex items-center rounded-2xl pl-4 h-8 w-80 bg-gray-800  border-blue-600 text-white hover:border " >

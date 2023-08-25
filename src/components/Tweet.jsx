@@ -4,7 +4,7 @@ import userImg from "../../public/myPic.jpg";
 import post from "../../public/post.png";
 import { FiMessageCircle } from "react-icons/fi";
 import { AiOutlineRetweet } from "react-icons/ai";
-import { AiOutlineHeart } from "react-icons/ai";
+import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
 import { FiUpload } from "react-icons/fi";
 
 const Tweet = () => {
@@ -51,19 +51,19 @@ const Tweet = () => {
 
         <div className="justify-around flex mt-4 space-x-6 text-gray-500">
           <button>
-            <div className="flex items-center">
+            <div className="flex items-center hover:text-blue-400">
               <FiMessageCircle className="w-5 h-5" />
               <span className="ml-2">93</span>
             </div>
           </button>
           <button>
-            <div className="flex items-center">
+            <div className="flex items-center hover:text-green-400">
               <AiOutlineRetweet className="w-5 h-5" />
               <span className="ml-2">1,179</span>
             </div>
           </button>
           <button>
-            <div className="flex items-center">
+            <div className="flex items-center hover:text-pink-700">
               <AiOutlineHeart className="w-5 h-5" />
               <span className="ml-2">15.1k</span>
             </div>
