@@ -54,7 +54,7 @@ function Signup() {
   };
 
   return (
-    <div className="bg-black text-white w-full p-4 px-8 flex flex-col h-full md:max-w-2xl  md:rounded-xl md:px-20">
+    <div className="bg-black text-white w-full p-4 px-8 flex flex-col h-full md:max-w-2xl  md:rounded-xl md:px-20 ">
       <div className="">
         <h1 className="font-bold text-xl">Step 1 of 5</h1>
         <form className="mt-8 h-fit mb-8">
@@ -113,12 +113,12 @@ function Signup() {
             <div className="flex space-x-2 mt-4">
               {/* Month Selector */}
 
-              <div className=" relative rounded-lg mr-2 h-16 border border-gray-800 py-6 px-2 hover:border-blue-700">
+              <div className=" relative rounded-lg mr-2  h-16 border border-gray-800 py-6 px-2 hover:border-blue-700">
                 <label className="text-gray-600 text-xs  absolute top-2 ">
                   Month
                 </label>
                 <select
-                  className="px-2  rounded-md shadow-sm    flex-grow bg-transparent w-36"
+                  className="px-2  rounded-md shadow-sm    flex-grow bg-transparent w-20 md:w-36"
                   value={selectedMonth}
                   onChange={(e) => setSelectedMonth(e.target.value)}
                 >
