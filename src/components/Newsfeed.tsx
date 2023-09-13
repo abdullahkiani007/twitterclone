@@ -27,7 +27,7 @@ const Newsfeed = () => {
   
   console.log("News feed got rendered")
   return (
-    <div className={`w-80 ml-auto ${pathname === "/login" && 'hidden'}`}>
+    <div className={`w-80 ml-auto ${(pathname === "/login"|| pathname === "/signup") && 'hidden'}`}>
       Newsfeed
       {isSearch && (
         <div className="flex items-center rounded-2xl pl-4 h-8 w-80 bg-gray-800  border-blue-600 text-white hover:border " >
