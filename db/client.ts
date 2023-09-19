@@ -12,7 +12,10 @@ if (!process.env.MONGODB_URI) {
 
 const uri = process.env.MONGODB_URI;
 console.log(uri);
-const options = {};
+const options = {
+  connectTimeoutMS: 30000, // 30 seconds
+  socketTimeoutMS: 30000,  // 30 seconds
+};
 
 let client;
 let clientPromise: Promise<MongoClient>;

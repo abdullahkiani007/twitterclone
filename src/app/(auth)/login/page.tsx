@@ -14,9 +14,28 @@ import Link from "next/link";
 const Login = () => {
   const router = useRouter();
   const { data: session } = useSession();
-  console.log("login", session);
+  console.log("login", session?.user?.name);
+  const data = {
+    name: session?.user?.name,
+    email: session?.user?.email,
+    image: session?.user?.image,
+  };
+
+  async function createuser(data: Object) {
+    const res = await fetch("http://localhost:3000/api/register", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+      // body: data,
+    });
+    const result = await res.json();
+    console.log(result);
+  }
   useEffect(() => {
     if (session) {
+      createuser(data);
       router.push("/home");
     }
   }, [session]);

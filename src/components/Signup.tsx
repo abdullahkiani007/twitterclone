@@ -5,7 +5,6 @@ import { IoMdArrowRoundBack } from "react-icons/io";
 import { IoCloseSharp } from "react-icons/io5";
 import { useRouter } from "next/navigation";
 import { AiFillCheckCircle } from "react-icons/ai";
-import { set } from "mongoose";
 
 function Signup() {
   const [name, setName] = useState("");
