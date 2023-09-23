@@ -1,20 +1,57 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { IoMdArrowRoundBack } from "react-icons/io";
 import { IoCloseSharp } from "react-icons/io5";
 import { useRouter } from "next/navigation";
 import { AiFillCheckCircle } from "react-icons/ai";
+import { useFormik } from "formik";
+import { userSchema } from "../../Schema/userSchema";
+import { User } from "../../Schema/userSchema";
+import Input from "./Input";
+import { set } from "mongoose";
 
 function Signup() {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
+  const { handleSubmit, handleChange, values, errors, touched, handleBlur } =
+    useFormik({
+      initialValues: {
+        name: "",
+        email: "",
+        password: "",
+        confirmPassword: "",
+      },
+      validationSchema: userSchema,
+
+      onSubmit: (values) => {
+        console.log(values);
+      },
+    });
+
+  const [minor, setMinor] = useState(true);
+  const [checked, setChecked] = useState(false);
+  const [name, setName] = useState(values.name);
+  const [email, setEmail] = useState(values.email);
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [isNameFocused, setIsNameFocused] = useState(false);
   const [isEmailFocused, setIsEmailFocused] = useState(false);
+  const [isPasswordFocused, setIsPasswordFocused] = useState(false);
+  const [isConfirmPasswordFocused, setIsConfirmPasswordFocused] =
+    useState(false);
   const [selectedMonth, setSelectedMonth] = useState("");
   const [selectedDay, setSelectedDay] = useState("");
   const [selectedYear, setSelectedYear] = useState("");
   const [step, setStep] = useState(1);
+
+  useEffect(() => {
+    // console.log(values);
+    setName(values.name);
+    setEmail(values.email);
+    setPassword(values.password);
+    setConfirmPassword(values.confirmPassword);
+  }, [{ ...values }]);
+
+  const calAge = new Date().getFullYear() - Number(selectedYear);
 
   const date = `${selectedMonth} ${selectedDay},${selectedYear}`;
   // Define lists of options for months, days, and years
@@ -42,6 +79,8 @@ function Signup() {
   );
 
   const handleNameFocus = () => {
+    // setName(values.name);
+    // alert(values.name);
     setIsNameFocused(true);
   };
 
@@ -52,6 +91,8 @@ function Signup() {
   };
 
   const handleEmailFocus = () => {
+    // setEmail(values.email);
+    // alert(values.email);
     setIsEmailFocused(true);
   };
 
@@ -61,13 +102,33 @@ function Signup() {
     }
   };
 
+  const handlePasswordFocus = () => {
+    setIsPasswordFocused(true);
+  };
+  const handlePasswordBlur = () => {
+    if (password === "") {
+      setIsPasswordFocused(false);
+    }
+  };
+  const handleConfirmPasswordFocus = () => {
+    setIsConfirmPasswordFocused(true);
+  };
+  const handleConfirmPasswordBlur = () => {
+    if (confirmPassword === "") {
+      setIsConfirmPasswordFocused(false);
+    }
+  };
+
   const handleClick = async () => {
+    console.log("Sending request");
     const data = {
       name,
       email,
-      date: `${selectedMonth}/${selectedDay}/${selectedYear}`,
+      password,
+      age: calAge,
     };
     console.log("clicked");
+
     const response = await fetch("/api/register", {
       method: "POST",
       headers: {
@@ -75,7 +136,26 @@ function Signup() {
       },
       body: JSON.stringify(data),
     });
+    console.log(response);
   };
+
+  function handleDisableButton() {
+    if (selectedDay && selectedMonth && selectedYear && calAge < 13) {
+      return true;
+    } else if (errors.name || errors.email) {
+      return true;
+    } else if (
+      name === "" ||
+      email === "" ||
+      selectedDay === "" ||
+      selectedMonth === "" ||
+      selectedYear === ""
+    ) {
+      return true;
+    }
+
+    return false;
+  }
 
   return (
     <div className="bg-black text-white w-full p-4 px-8 flex flex-col h-full md:max-w-2xl  md:rounded-xl md:px-20 ">
@@ -107,47 +187,77 @@ function Signup() {
             <h1 className="font-bold text-2xl">Create your account</h1>
 
             <div className="py-6 pr-4 mb-3">
+              {/* name input */}
               <div className="relative ">
                 <input
                   type="text"
                   className={`bg-transparent border border-white w-full my-3 py-4 rounded-sm border-opacity-20 pl-2 h-16 ${
                     isNameFocused || name ? "pt-6" : ""
-                  }`}
+                  } ${
+                    touched.name && errors.name
+                      ? "border-red-500 outline-red-700"
+                      : ""
+                  } `}
                   // placeholder="Name"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
+                  name="name"
+                  id="name"
+                  value={values.name}
+                  onChange={handleChange}
                   onFocus={handleNameFocus}
-                  onBlur={handleNameBlur}
+                  onBlur={handleBlur}
                 />
+
                 <label
                   className={`absolute left-2 bottom-7 transition-all transform ${
                     isNameFocused || name ? "-translate-y-6 text-xs" : ""
-                  } ${isNameFocused ? "text-primary" : "text-gray-500"}`}
+                  } ${isNameFocused ? "text-primary" : "text-gray-500"} ${
+                    touched.name && errors.name ? "text-red-500" : ""
+                  }`}
                 >
                   Name
                 </label>
               </div>
-
+              {errors.name && (
+                <div className="text-red-500 text-sm">{errors.name}</div>
+              )}
+              {/* <Input
+                values
+                handleBlur
+                handleChange
+                touched
+                errors
+                name="name"
+                isNameFocused
+                handleNameFocus
+              /> */}
               <div className="relative ">
+                {/* Email Input */}
                 <input
                   type="email"
                   className={`bg-transparent border border-white w-full my-3 py-4 h-16 rounded-sm border-opacity-20 pl-2 ${
                     isEmailFocused || email ? "pt-6" : ""
                   }`}
                   // placeholder="Email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  name="email"
+                  id="email"
+                  value={values.email}
+                  onChange={handleChange}
                   onFocus={handleEmailFocus}
-                  onBlur={handleEmailBlur}
+                  onBlur={handleBlur}
                 />
                 <label
                   className={`absolute left-2 bottom-7 transition-all transform ${
                     isEmailFocused || email ? "-translate-y-6 text-xs" : ""
-                  } ${isEmailFocused ? "text-primary" : "text-gray-500"}`}
+                  } ${isEmailFocused ? "text-primary" : "text-gray-500"}
+                  ${touched.email && errors.email ? "text-red-500" : ""}
+                  `}
                 >
                   Email
                 </label>
               </div>
+              {errors.email && touched.email && (
+                <div className="text-red-500 text-sm">{errors.email}</div>
+              )}
             </div>
 
             <h3 className="text-sm font-bold mb-2">Date of birth</h3>
@@ -230,6 +340,11 @@ function Signup() {
                   </select>
                 </div>
               </div>
+              {selectedDay && selectedMonth && selectedYear && calAge < 13 && (
+                <div className="text-sm text-red-500 ">
+                  You should be atleast 13 years old to use this app
+                </div>
+              )}
             </div>
           </form>
 
@@ -264,6 +379,7 @@ function Signup() {
               </span>
             </p>
           </div>
+
           {/* Step 3 */}
           <form className={` ${step != 3 && "hidden"}`}>
             <h1 className="font-bold text-2xl">Create your account</h1>
@@ -278,6 +394,7 @@ function Signup() {
                 <p className="text-sm text-gray-500 w-fit -translate-y-2">
                   Name
                 </p>
+
                 <div className="-translate-y-2 pr-2 flex justify-between items-center">
                   <p>{name}</p>
                   <AiFillCheckCircle className="text-green-500" />
@@ -342,18 +459,116 @@ function Signup() {
               </p>
             </div>
           </form>
+
+          {/* Step 4 */}
+          <form className={` ${step != 4 && "hidden"}`}>
+            <div className="py-6 pr-4 mb-3">
+              {/* Confirm Password */}
+              <div className="relative ">
+                <input
+                  type={`${checked ? "text" : "password"}`}
+                  className={`bg-transparent border border-white w-full my-3 py-4 rounded-sm border-opacity-20 pl-2 h-16 ${
+                    isPasswordFocused || password ? "pt-6" : ""
+                  } ${
+                    touched.password && errors.password
+                      ? "border-red-500 outline-red-700"
+                      : ""
+                  } `}
+                  // placeholder="Name"
+                  name="password"
+                  id="password"
+                  value={values.password}
+                  onChange={handleChange}
+                  onFocus={handlePasswordFocus}
+                  onBlur={handleBlur}
+                />
+
+                <label
+                  className={`absolute left-2 bottom-7 transition-all transform ${
+                    isPasswordFocused || password
+                      ? "-translate-y-6 text-xs"
+                      : ""
+                  } ${isPasswordFocused ? "text-primary" : "text-gray-500"} ${
+                    touched.password && errors.password ? "text-red-500" : ""
+                  }`}
+                >
+                  Password
+                </label>
+              </div>
+              {errors.password && (
+                <div className="text-red-500 text-sm">{errors.password}</div>
+              )}
+              <input
+                type="checkbox"
+                id="showPassword"
+                className=" checked:bg-blue-500 border border-gray-400 w-4 h-4 rounded-md"
+                // onClick={(e: React.ChangeEvent<HTMLInputElement>) => {
+                //   if (e.target.checked) {
+                //   }
+                // }}
+                onChange={(e) => {
+                  setChecked(e.target.checked);
+                }}
+              />
+              <label htmlFor="showPassword" className="ml-2 text-gray-700">
+                Show password
+              </label>
+              <div className="relative ">
+                <input
+                  type="password"
+                  className={`bg-transparent border border-white w-full my-3 py-4 rounded-sm border-opacity-20 pl-2 h-16 ${
+                    isConfirmPasswordFocused || confirmPassword ? "pt-6" : ""
+                  } ${
+                    touched.confirmPassword && errors.confirmPassword
+                      ? "border-red-500 outline-red-700"
+                      : ""
+                  } `}
+                  // placeholder="Name"
+                  name="confirmPassword"
+                  id="confirmPassword"
+                  value={values.confirmPassword}
+                  onChange={handleChange}
+                  onFocus={handleConfirmPasswordFocus}
+                  onBlur={handleBlur}
+                />
+
+                <label
+                  className={`absolute left-2 bottom-7 transition-all transform ${
+                    isPasswordFocused || password
+                      ? "-translate-y-6 text-xs"
+                      : ""
+                  } ${
+                    isConfirmPasswordFocused ? "text-primary" : "text-gray-500"
+                  } ${
+                    touched.confirmPassword && errors.confirmPassword
+                      ? "text-red-500"
+                      : ""
+                  }`}
+                >
+                  Confirm Password
+                </label>
+              </div>
+              {errors.confirmPassword && (
+                <div className="text-red-500 text-sm">
+                  {errors.confirmPassword}
+                </div>
+              )}
+            </div>
+          </form>
         </div>
       </div>
 
+      {/* SignUP button */}
       <div className="mr-4 h-full flex align-bottom pb-6">
         <button
-          className="mt-auto py-3 bg-gray-200 text-black rounded-3xl w-full font-bold"
+          className="mt-auto py-3 bg-gray-200 text-black rounded-3xl w-full font-bold disabled:bg-gray-500 "
+          disabled={handleDisableButton()}
           onClick={() => {
             setStep(step + 1);
-            handleClick();
+            if (step === 4) handleClick();
           }}
         >
-          Next
+          {step === 4 ? "Sign Up" : "Next"}
         </button>
       </div>
     </div>

@@ -1,7 +1,7 @@
 import NextAuth from "next-auth";
 import { options } from "./options";
 import { MongoDBAdapter } from "@next-auth/mongodb-adapter";
-import clientPromise from "../../../../../db/client";
+import { clientPromise } from "../../../../../db/client";
 const handler = NextAuth({
   adapter: MongoDBAdapter(clientPromise),
   ...options,

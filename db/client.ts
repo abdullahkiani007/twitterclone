@@ -1,5 +1,6 @@
 // This approach is taken from https://github.com/vercel/next.js/tree/canary/examples/with-mongodb
 import { MongoClient } from "mongodb";
+import mongoose from "mongoose";
 
 declare global {
     var _mongoClientPromise : Promise<MongoClient> 
@@ -37,6 +38,22 @@ if (process.env.NODE_ENV === "development") {
   console.log("Data base connected")
 }
 
+const connect = ()=>{
+  mongoose.connect(uri);
+  const connection = mongoose.connection;
+
+  connection.on('connected',()=>{
+    console.log("Data base Connected with funciton connect")
+  })
+
+  connection.on('error',()=>{
+    console.log("Database connection failed")
+  })
+  
+}
 // Export a module-scoped MongoClient promise. By doing this in a
 // separate module, the client can be shared across functions.
-export default clientPromise;
+export {
+  clientPromise,
+  connect
+};
