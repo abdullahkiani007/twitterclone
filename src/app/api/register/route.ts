@@ -2,6 +2,8 @@ import { NextResponse } from 'next/server'
 import User from '../../../../models/user'; // Import your Mongoose model
 // import {clientPromise , connect} from '../../../../db/client';
 import connectToDB from '../../../../db/connect';
+import sendCode from '../../../../services/sendMail';
+
 
 interface Iuser {
   name: string,
@@ -9,7 +11,11 @@ interface Iuser {
   password: string,
 }
 
-
+function genCode (){
+  // generate 4 digit code
+  const code = Math.floor(1000 + Math.random() * 9000).toString();
+  return code;
+}
 
 export async function POST(request: Request) {
 
@@ -17,32 +23,30 @@ export async function POST(request: Request) {
   console.log("POST Request Received on /api/register")
 
   const body = await request.json();
+  const code = genCode()
   // console.log(body);
+  const newUser = {
+    ...body,verificationCode: code
+  }
 
     try{
       const data = await User.exists({email: body.email});
-      const user = await User.find({email:body.email})
-      console.log(user);
-      
       if(data)
-        return NextResponse.json({ message: 'User already exists' })
+        return NextResponse.json({status:401 ,  message: 'User already exists' })
     }catch(err){
       console.log(err);
     }
 
-  // const newUser = {
-  //   name: "Haji Ahmad",
-  //   email: "johndoe@example.com",
-  //   password: "password123",
-  // };
+  
+  let user;
+  try {
+    sendCode(body.email , code);
+    // Create a new document and save it to the "users" collection
+    user = await new User(newUser).save();
+    console.log(user);
+  } catch (error) {
+    console.error('Error creating user:', error);
+  }
 
-  // try {
-  //   // Create a new document and save it to the "users" collection
-  //   const user = await new User(newUser).save();
-  //   console.log(user);
-  // } catch (error) {
-  //   console.error('Error creating user:', error);
-  // }
-
-  return NextResponse.json({ message: 'Hello from /api/register' })
+  return NextResponse.json({status:200 , message: 'User Created Successfully' , user })
 }

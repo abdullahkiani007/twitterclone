@@ -3,10 +3,12 @@
 import React, { useState, useEffect } from "react";
 import { IoMdArrowRoundBack } from "react-icons/io";
 import { IoCloseSharp } from "react-icons/io5";
-import { useRouter } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 import { AiFillCheckCircle } from "react-icons/ai";
 import { useFormik } from "formik";
 import { userSchema } from "../../Schema/userSchema";
+import { signIn } from "next-auth/react";
+
 import { User } from "../../Schema/userSchema";
 import Input from "./Input";
 import { set } from "mongoose";
@@ -42,6 +44,10 @@ function Signup() {
   const [selectedDay, setSelectedDay] = useState("");
   const [selectedYear, setSelectedYear] = useState("");
   const [step, setStep] = useState(1);
+  const [code1, setCode1] = useState("");
+  const [code2, setCode2] = useState("");
+  const [code3, setCode3] = useState("");
+  const [code4, setCode4] = useState("");
 
   useEffect(() => {
     // console.log(values);
@@ -119,24 +125,53 @@ function Signup() {
     }
   };
 
-  const handleClick = async () => {
-    console.log("Sending request");
-    const data = {
-      name,
-      email,
-      password,
-      age: calAge,
-    };
-    console.log("clicked");
+  const handleCodeFocus = () => {
+    setIsConfirmPasswordFocused(true);
+  };
 
-    const response = await fetch("/api/register", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    });
-    console.log(response);
+  const handleClick = async (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
+    console.log("Sending request");
+    if (step === 4) {
+      const data = {
+        name,
+        email,
+        password,
+        age: calAge,
+      };
+      console.log("clicked");
+
+      const response = await fetch("/api/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+      console.log(await response.json());
+    } else if (step == 5) {
+      const data = {
+        userCode: code1 + code2 + code3 + code4,
+        email,
+      };
+      console.log("Clicked : ", data);
+
+      const response = await fetch("/api/verify", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+      console.log(await response.json());
+      signIn("credentials", {
+        ...data,
+        redirect: false,
+      });
+      router.push("/home");
+      e.preventDefault();
+    }
   };
 
   function handleDisableButton() {
@@ -555,6 +590,53 @@ function Signup() {
               )}
             </div>
           </form>
+
+          {/* Step 5 */}
+          <form className={` ${step != 5 && "hidden"}`}>
+            <h1>Enter the Verification code sent to </h1>
+            <p className="text-sm text-blue-500">{email}</p>
+            <div className="py-6 pr-4 mb-3">
+              {/* Confirm Code */}
+              <div className="flex">
+                <input
+                  type="text"
+                  maxLength={1}
+                  className="bg-transparent text-center border border-gray-500 mr-4 text-white font-bold w-10 h-10"
+                  value={code1}
+                  onChange={(e) => {
+                    setCode1(e.target.value);
+                  }}
+                />
+                <input
+                  type="text"
+                  maxLength={1}
+                  className="bg-transparent text-center border border-gray-500 mr-4 text-white font-bold w-10 h-10"
+                  value={code2}
+                  onChange={(e) => {
+                    setCode2(e.target.value);
+                  }}
+                />
+                <input
+                  type="text"
+                  maxLength={1}
+                  className="bg-transparent text-center border border-gray-500 mr-4 text-white font-bold w-10 h-10"
+                  value={code3}
+                  onChange={(e) => {
+                    setCode3(e.target.value);
+                  }}
+                />
+                <input
+                  type="text"
+                  maxLength={1}
+                  className="bg-transparent text-center border border-gray-500 mr-4 text-white font-bold w-10 h-10"
+                  value={code4}
+                  onChange={(e) => {
+                    setCode4(e.target.value);
+                  }}
+                />
+              </div>
+            </div>
+          </form>
         </div>
       </div>
 
@@ -563,12 +645,12 @@ function Signup() {
         <button
           className="mt-auto py-3 bg-gray-200 text-black rounded-3xl w-full font-bold disabled:bg-gray-500 "
           disabled={handleDisableButton()}
-          onClick={() => {
+          onClick={(e) => {
             setStep(step + 1);
-            if (step === 4) handleClick();
+            handleClick(e);
           }}
         >
-          {step === 4 ? "Sign Up" : "Next"}
+          {step === 4 ? "Sign Up" : step === 5 ? "Verify" : "Next"}
         </button>
       </div>
     </div>

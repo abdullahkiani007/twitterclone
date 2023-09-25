@@ -30,6 +30,7 @@
     "yup": "^1.2.0"
   },
   "devDependencies": {
+    "@types/nodemailer": "^6.4.11",
     "prisma": "^5.2.0"
   }
 }

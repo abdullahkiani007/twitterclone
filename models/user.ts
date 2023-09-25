@@ -9,7 +9,8 @@ const schema = new mongoose.Schema({
     email: { type: String, required: true },
     password:{ type: String, required: true },
     emailVerified: { type: Boolean, default: false },
-    age: {type : Number  }
+    age: {type : Number  },
+    verificationCode: { type: String },
 })
 
 const User = mongoose.models.Users || mongoose.model<Iuser>("Users", schema);

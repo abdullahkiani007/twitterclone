@@ -1,4 +1,4 @@
-import nodemailer from "nodemailer";
+import nodemailer from 'nodemailer';
 
 
 
@@ -16,7 +16,7 @@ const transporter = nodemailer.createTransport({
 
 // Sending the email
 
-const sendCode = async (email :String, code :String) => {
+const sendCode = async (email :string, code :string) => {
   const mailOptions = {
     from: `${process.env.HOST_MAIL}`,
     to: email,
