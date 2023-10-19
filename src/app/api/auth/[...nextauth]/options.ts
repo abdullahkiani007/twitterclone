@@ -2,6 +2,9 @@ import { NextAuthOptions } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import  CredentialsProvider from "next-auth/providers/credentials"
 import { useRouter } from "next/navigation";
+import connectToDB from "../../../../../db/connect";
+import User from "../../../../../models/user";
+
 
 // const router  = useRouter();
 
@@ -28,12 +31,28 @@ export const options: NextAuthOptions = {
             async authorize(credentials, req) {
               console.log("Credentials received in authorize", credentials);
               // Add logic here to look up the user from the credentials supplied
-              const user = { id: "1", name: "J Smith", email: "jsmith@example.com" }
+              let user;
+
+              const code = req.body?.userCode;
+              const email = req.body?.email;
+
+              try {
+                user = await User.findOne({email})
+                console.log(user)
+              } catch (error) {
+                console.log(error)
+              }
         
               if (user) {
+                if (user.verificationCode === code){
+                  console.log(code)
                console.log("Returning user", user)
                 // Any object returned will be saved in `user` property of the JWT
                 return user
+                }
+                else{
+                  return null
+                }
               } else {
                 console.log("User not found", user)
                 // If you return null then an error will be displayed advising the user to check their details.

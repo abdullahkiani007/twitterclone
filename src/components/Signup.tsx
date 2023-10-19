@@ -48,6 +48,7 @@ function Signup() {
   const [code2, setCode2] = useState("");
   const [code3, setCode3] = useState("");
   const [code4, setCode4] = useState("");
+  const [invalidCode, setInvalidCode] = useState(false);
 
   useEffect(() => {
     // console.log(values);
@@ -165,12 +166,17 @@ function Signup() {
         body: JSON.stringify(data),
       });
       console.log(await response.json());
-      signIn("credentials", {
+      let res = await signIn("credentials", {
         ...data,
         redirect: false,
       });
-      router.push("/home");
-      e.preventDefault();
+      console.log("X .... ", res);
+      if (!res?.error) {
+        router.push("/home");
+        e.preventDefault();
+      } else {
+        setStep(5);
+      }
     }
   };
 
@@ -185,6 +191,11 @@ function Signup() {
       selectedDay === "" ||
       selectedMonth === "" ||
       selectedYear === ""
+    ) {
+      return true;
+    } else if (
+      (code1 === "" || code2 === "" || code3 === "" || code4 === "") &&
+      step === 5
     ) {
       return true;
     }
@@ -635,6 +646,7 @@ function Signup() {
                   }}
                 />
               </div>
+              {invalidCode && <p>Invalid Code . Please try Again.</p>}
             </div>
           </form>
         </div>

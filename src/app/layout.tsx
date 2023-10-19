@@ -24,7 +24,7 @@ export default function RootLayout(props: { children: React.ReactNode }) {
 
             {props.children}
 
-            <aside className="hidden lg:block h-screen sticky top-0">
+            <aside className=" h-screen sticky top-0">
               <Newsfeed />
             </aside>
           </div>

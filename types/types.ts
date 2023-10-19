@@ -8,13 +8,26 @@ export type Iuser = {
     age: number,
     verificationCode: string
   }
+
+
+  // import user type containing id
+  export type Imuser={
+    _id:string,
+    name: string;
+    email: string;
+    password: string;
+    emailVerified: boolean,
+    age: number,
+    verificationCode: string
+  }
   
   export type Itweet  = {
-    tweet: string;
+   
     user: string;
-    likes: number;
-    comments: number;
-    retweets: number;
+    content: string;
+    likes: [];
+    comments: [];
+    retweets: [];
     media: string;
   }
   
