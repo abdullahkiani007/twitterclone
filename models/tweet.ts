@@ -11,7 +11,7 @@ mongoose.set('bufferCommands', false);
 const postSchema = new Schema({
   user: {
     type: Schema.Types.ObjectId,
-    ref: 'User',
+    ref: 'Users',
     required: true,
   },
   content: {
@@ -20,17 +20,17 @@ const postSchema = new Schema({
   },
   likes: [{
     type: Schema.Types.ObjectId,
-    ref: 'User',
+    ref: 'Users',
   }],
   retweets: [{
     type: Schema.Types.ObjectId,
-    ref: 'User',
+    ref: 'Users',
   }],
   parentPost: {
     type: Schema.Types.ObjectId,
     ref: 'Post', // Reference to another Post (Tweet or Comment)
   },
-}, { timestamps: true });
+}, { timestamps: true , strictPopulate : false });
 
 // const Post = mongoose.model('Post', postSchema);
 

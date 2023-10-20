@@ -7,18 +7,18 @@ import { AiOutlineRetweet } from "react-icons/ai";
 import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
 import { FiUpload } from "react-icons/fi";
 
-const Tweet = () => {
-  const user = {
-    name: "John Doe",
-    userName: "@johndoe",
-    avatar: userImg,
-
-    content: {
-      date: "Aug 23",
-      text: "1. Yes there are guys that will date a woman with a kid, though they’re typically not the best of men\n.2. Yes, this is generally true.\nJust the truth 🤷‍♂️",
-      image: post,
-    },
+interface props {
+  name: string;
+  userName: string;
+  avatar: string;
+  content: {
+    date: string;
+    text: string;
+    image: string;
   };
+}
+const Tweet = (Props: props) => {
+  const user = { ...Props };
 
   return (
     <div className="p-4 border-b-2 border-gray-400 border-opacity-30 flex ">

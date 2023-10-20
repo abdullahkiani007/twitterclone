@@ -1,5 +1,7 @@
 import {NextResponse} from "next/server"
 import Post from "../../../../models/tweet"
+import { Iuser } from "../../../../types/types";
+
 
 
 
@@ -10,9 +12,11 @@ export async function GET(request:Request){
     let posts;
     try{
 
-        posts = await Post.find({})
+        posts = await Post.find({});
+
 
         if(posts){
+            console.log(posts)
             return NextResponse.json({
                 status:200,
                 posts

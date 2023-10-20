@@ -24,7 +24,7 @@ export  async function POST(request:Request) {
             console.log(user)
              // Tweet object
         const tweet:Itweet = {
-            content:"asdf",
+            content:body.tweet,
             user:user._id,
             likes:[],
             comments:[],

@@ -8,37 +8,40 @@ import { useSession, signIn } from "next-auth/react";
 import { Router } from "next/router";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
+import { Itweet } from "../../types/types";
 
 const Home = () => {
   const { data: session } = useSession();
   const [tweet, setTweet] = useState("");
-  const [posts, setPosts] = useState([{}]);
+  const [posts, setPosts] = useState<Itweet[]>([]);
+  const [refresh, setRefresh] = useState(true);
+
+  async function getPosts() {
+    try {
+      const response = await fetch("/api/getTweet", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      const body = await response.json();
+
+      if (body.status === 200) {
+        console.log(body.posts);
+        setPosts(body.posts);
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  }
 
   useEffect(() => {
-    async function getPosts() {
-      try {
-        const response = await fetch("/api/getTweet", {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
-
-        const body = await response.json();
-
-        if (body.status === 200) {
-          console.log(body.posts);
-          setPosts(body.posts);
-        }
-      } catch (err) {
-        console.log(err);
-      }
-    }
     if (session) {
       getPosts();
       console.log(posts);
     }
-  }, []);
+  }, [refresh]);
 
   const router = useRouter();
   function textAreaAdjust(element: any) {
@@ -60,12 +63,17 @@ const Home = () => {
         },
         body: JSON.stringify(tweetData),
       });
+      getPosts();
+      setRefresh(true);
+      setTweet("");
     } catch (e) {}
   }
   if (!session) {
     console.log("Pleses sign in", session);
     router.push("/login");
   }
+
+  console.log("Session: ", session, " \n Posts: ", posts);
 
   if (session && session.user) {
     return (
@@ -102,11 +110,21 @@ const Home = () => {
             </div>
           </div>
         </div>
-        <Tweet />
-        <Tweet />
-        <Tweet />
+
         {posts.map((item) => {
-          return <h1>post</h1>;
+          console.log("item", item);
+          const user = {
+            name: "John Doe",
+            userName: "@johndoe",
+            avatar: "",
+
+            content: {
+              date: "Aug 23",
+              text: item.content,
+              image: "",
+            },
+          };
+          return <Tweet {...user} />;
         })}
       </div>
     );
