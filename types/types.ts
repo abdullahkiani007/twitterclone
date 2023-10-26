@@ -1,6 +1,7 @@
+import {Document, PopulatedDoc} from "mongoose"
 
 
-export type Iuser = {
+export interface Iuser extends Document  {
     name: string;
     email: string;
     password: string;
@@ -21,14 +22,15 @@ export type Iuser = {
     verificationCode: string
   }
   
-  export type Itweet  = {
+  export interface Itweet extends Document   {
    
-    user: string;
+    user: PopulatedDoc<Iuser>;
     content: string;
-    likes: [];
-    comments: [];
-    retweets: [];
+    likes: string[];
+    comments: string[];
+    retweets: string[];
     media: string;
+    createdAt:string;
   }
   
   

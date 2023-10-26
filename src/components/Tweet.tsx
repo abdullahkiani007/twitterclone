@@ -19,7 +19,19 @@ interface props {
 }
 const Tweet = (Props: props) => {
   const user = { ...Props };
+  const date = new Date(user.content.date);
 
+  const options: Intl.DateTimeFormatOptions = {
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  };
+
+  const formatDate = Intl.DateTimeFormat("en-US", options).format(date);
+
+  const handleLike = () => {
+    alert("i clicked");
+  };
   return (
     <div className="p-4 border-b-2 border-gray-400 border-opacity-30 flex ">
       <div className="mb-4 mr-2 md:mb-0 md:mr-4 w-12 h-12 rounded-full overflow-hidden flex-shrink-0">
@@ -35,7 +47,7 @@ const Tweet = (Props: props) => {
           <h2 className="font-bold text-sm tracking-wider">{user.name}</h2>
           <span className="ml-2 text-gray-500">{user.userName}</span>
           <span className="mx-2 text-gray-500">·</span>
-          <span className="text-gray-500">{user.content.date}</span>
+          <span className="text-gray-500">{formatDate}</span>
         </div>
 
         <p className="text-sm font-normal mb-2">{user.content.text}</p>
@@ -62,7 +74,7 @@ const Tweet = (Props: props) => {
               <span className="ml-2">1,179</span>
             </div>
           </button>
-          <button>
+          <button onClick={handleLike}>
             <div className="flex items-center hover:text-pink-700">
               <AiOutlineHeart className="w-5 h-5" />
               <span className="ml-2">15.1k</span>

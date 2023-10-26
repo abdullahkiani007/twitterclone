@@ -23,7 +23,7 @@ export  async function POST(request:Request) {
         if(user){
             console.log(user)
              // Tweet object
-        const tweet:Itweet = {
+        const tweet = {
             content:body.tweet,
             user:user._id,
             likes:[],

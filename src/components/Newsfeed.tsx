@@ -21,7 +21,7 @@ const Newsfeed = () => {
   console.log("News feed got rendered");
   return (
     <div
-      className={`w-80 ml-auto ${
+      className={`hidden md:flex w-80 ml-auto ${
         (pathname === "/login" ||
           pathname === "/signin" ||
           pathname === "/signup") &&

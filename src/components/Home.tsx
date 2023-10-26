@@ -114,12 +114,12 @@ const Home = () => {
         {posts.map((item) => {
           console.log("item", item);
           const user = {
-            name: "John Doe",
-            userName: "@johndoe",
+            name: item.user,
+            userName: item.user + "2342",
             avatar: "",
 
             content: {
-              date: "Aug 23",
+              date: item.createdAt,
               text: item.content,
               image: "",
             },
