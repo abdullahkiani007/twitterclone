@@ -655,7 +655,9 @@ function Signup() {
       {/* SignUP button */}
       <div className="mr-4 h-full flex align-bottom pb-6">
         <button
-          className="mt-auto py-3 bg-gray-200 text-black rounded-3xl w-full font-bold disabled:bg-gray-500 "
+          className={`mt-auto py-3 bg-gray-200 text-black rounded-3xl w-full font-bold disabled:bg-gray-500   ${
+            step === 6 ? "hidden" : ""
+          }`}
           disabled={handleDisableButton()}
           onClick={(e) => {
             setStep(step + 1);
