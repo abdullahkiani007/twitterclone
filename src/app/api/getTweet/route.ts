@@ -16,11 +16,12 @@ export async function GET(request:Request){
 
 
         if(posts){
-            // console.log(posts)
+            console.log(posts)
 
             const newPosts = posts.map((post)=>{
                 const obj = {
                     user:post.user.name,
+                    id:post.user._id,
                     content:post.content,
                     likes:post.likes,
                     retweets:post.retweets,

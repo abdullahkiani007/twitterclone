@@ -9,6 +9,7 @@ import { FiUpload } from "react-icons/fi";
 
 interface props {
   name: string;
+  id: string;
   userName: string;
   avatar: string;
   content: {
@@ -29,7 +30,21 @@ const Tweet = (Props: props) => {
 
   const formatDate = Intl.DateTimeFormat("en-US", options).format(date);
 
-  const handleLike = () => {
+  const handleLike = async () => {
+    const data = {
+      id: user.id,
+    };
+    const response = await fetch("/api/likeTweet", {
+      method: "POST",
+      headers: {
+        "Content-type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
+
+    console.log(user);
+    const body = await response.json();
+    console.log(body);
     alert("i clicked");
   };
   return (
