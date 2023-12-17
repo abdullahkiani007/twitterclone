@@ -1,4 +1,5 @@
 import {Document, PopulatedDoc} from "mongoose"
+import { __String } from "typescript";
 
 
 export interface Iuser extends Document  {
@@ -7,7 +8,8 @@ export interface Iuser extends Document  {
     password: string;
     emailVerified: boolean,
     age: number,
-    verificationCode: string
+    verificationCode: string,
+    avatar:__String
   }
 
 
@@ -25,6 +27,7 @@ export interface Iuser extends Document  {
   export interface Itweet extends Document   {
    
     user: PopulatedDoc<Iuser>;
+    tweetID:string;
     content: string;
     likes: string[];
     comments: string[];

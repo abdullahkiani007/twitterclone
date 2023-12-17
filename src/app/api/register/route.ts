@@ -26,7 +26,7 @@ export async function POST(request: Request) {
   const code = genCode()
   // console.log(body);
   const newUser = {
-    ...body,verificationCode: code
+    ...body,verificationCode: code,avatar:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTg1YZuLQXrcuhSLlnGixDD9wEHqCloTUe_KWyQz0N6L0W7fgneXDyxG3_HvoC8nQ3P4CY&usqp=CAU"
   }
 
     try{

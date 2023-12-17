@@ -22,6 +22,7 @@ export async function GET(request:Request){
                 const obj = {
                     user:post.user.name,
                     id:post.user._id,
+                    tweetID:post.id,
                     content:post.content,
                     likes:post.likes,
                     retweets:post.retweets,

@@ -11,6 +11,7 @@ const schema = new mongoose.Schema({
     emailVerified: { type: Boolean, default: false },
     age: {type : Number  },
     verificationCode: { type: String },
+    avatar:{type:String},
 })
 
 const User = mongoose.models.Users || mongoose.model<Iuser>("Users", schema);
