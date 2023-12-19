@@ -7,9 +7,10 @@ import connectToDB from "../../../../db/connect";
 
 export async function POST (request:Request){
 
-    console.log("Request received on api/findemail")
-    const {input} = await request.json();
+    console.log("Request received on api/VerifyPass")
+    const input = await request.json();
     await connectToDB();
+    console.log(input)
     try{
         const user =await User.findOne({email : input.email})
         console.log("User password : ",user.password, " User input : ",input.password)

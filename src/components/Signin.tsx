@@ -66,6 +66,7 @@ function Signin() {
         console.log(err);
       }
     } else if (step === 2) {
+      console.log("email", userInput);
       const data = {
         email: userInput,
         password,
@@ -83,7 +84,10 @@ function Signin() {
         });
 
         response.json().then((result: any) => {
-          console.log(result);
+          if (result.status === 200) {
+            signIn();
+            router.push("/home");
+          }
         });
       } catch (err) {
         console.log(err);

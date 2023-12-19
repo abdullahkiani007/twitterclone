@@ -176,7 +176,7 @@ const Home = () => {
               onInput={(e) => {
                 textAreaAdjust(e.target);
               }}
-              value={transcript}
+              value={`${transcript} ${tweet}`}
               onChange={(e) => setTweet(e.target.value)}
               className="w-full bg-transparent focus:outline-none tracking-wide resize-none overflow-hidden h-fit"
               placeholder="What is happening?!"
