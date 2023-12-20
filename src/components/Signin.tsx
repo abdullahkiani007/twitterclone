@@ -9,6 +9,8 @@ interface responsetype {
   status: number;
   message: string;
 }
+
+// signin compnent
 function Signin() {
   const router = useRouter();
   const [userInput, setUserInput] = useState("");
